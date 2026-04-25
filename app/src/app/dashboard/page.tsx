@@ -56,8 +56,22 @@ export default async function DashboardPage() {
   if (!user) redirect('/login')
 
   // user is guaranteed non-null past this point (redirect() throws)
-  const { data: landlordRow } = await supabase.from('landlords').select('*').eq('user_id', user!.id).single()
-  if (!landlordRow) redirect('/onboarding')
+  let { data: landlordRow } = await supabase.from('landlords').select('*').eq('user_id', user!.id).single()
+
+  if (!landlordRow) {
+    const meta = user!.user_metadata ?? {}
+    const { data: created } = await supabase.from('landlords').insert({
+      user_id: user!.id,
+      full_name: (meta.full_name as string) || (user!.email ?? 'Landlord'),
+      email: user!.email ?? '',
+      phone: (meta.phone as string) || '',
+      country: (meta.country as string) || 'ZW',
+      subscription_tier: 'starter',
+    }).select().single()
+    landlordRow = created
+  }
+
+  if (!landlordRow) redirect('/login')
 
   const landlord = landlordRow as Row
   const { payments, tenants, openIssues, totalRevenue, collectedPct, occupancyPct, escalations, paidCount, totalExpected } = await getDashboardData(landlord.id as string)

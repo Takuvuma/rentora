@@ -1,8 +1,30 @@
-export default function PropertiesPage() {
+import { createClient } from '@/lib/supabase/server'
+import { redirect } from 'next/navigation'
+import { PropertiesClient } from './properties-client'
+
+export default async function PropertiesPage() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/login')
+
+  const { data: landlord } = await supabase
+    .from('landlords')
+    .select('id, country')
+    .eq('user_id', user.id)
+    .single()
+  if (!landlord) redirect('/login')
+
+  const { data: properties } = await supabase
+    .from('properties')
+    .select('*, units(*)')
+    .eq('landlord_id', landlord.id)
+    .order('created_at', { ascending: false })
+
   return (
-    <div>
-      <h1 className="text-2xl font-semibold text-[#0A1628] mb-2">Properties</h1>
-      <p className="text-sm text-[#6B7280]">Add and manage your properties and units — coming in Phase 2.</p>
-    </div>
+    <PropertiesClient
+      landlordId={landlord.id as string}
+      landlordCountry={landlord.country as string}
+      initialProperties={(properties ?? []) as any[]}
+    />
   )
 }
