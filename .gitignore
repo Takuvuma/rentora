@@ -1,0 +1,17 @@
+# dependencies (root - stray)
+node_modules/
+package.json
+package-lock.json
+
+# Next.js app
+app/.next/
+app/node_modules/
+app/.env.local
+app/.env*.local
+app/out/
+app/build/
+
+# misc
+.DS_Store
+*.log
+*.tsbuildinfo
