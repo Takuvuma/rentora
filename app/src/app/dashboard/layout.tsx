@@ -13,11 +13,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
     <div className="flex h-screen bg-[#FAF8F3] overflow-hidden">
       <Sidebar />
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-6xl mx-auto px-6 py-8">
+        <div className="max-w-6xl mx-auto px-4 lg:px-6 py-6 lg:py-8 pb-24 lg:pb-8">
           {children}
         </div>
       </main>
-      <Toaster position="bottom-right" richColors />
+      <Toaster position="top-center" richColors />
     </div>
   )
 }

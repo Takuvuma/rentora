@@ -123,7 +123,7 @@ export function PaymentsClient({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-semibold text-[#0A1628]">Payments</h1>
           <p className="text-sm text-[#6B7280] mt-1">{monthLabel}</p>
@@ -131,7 +131,7 @@ export function PaymentsClient({
         <Button
           onClick={generateMonthPayments}
           disabled={generating || tenants.length === 0}
-          className="bg-[#0A1628] hover:bg-[#0D9E75] text-white rounded-full"
+          className="bg-[#0A1628] hover:bg-[#0D9E75] text-white rounded-full w-full sm:w-auto"
         >
           <Zap size={15} className="mr-1" />
           {generating ? 'Generating…' : 'Generate Month\'s Rent'}
@@ -168,14 +168,15 @@ export function PaymentsClient({
               <p className="text-xs text-[#6B7280] mt-1">Click "Generate Month's Rent" to create records for all tenants</p>
             </div>
           ) : (
-            <table className="w-full text-sm">
+            <div className="overflow-x-auto">
+            <table className="w-full text-sm min-w-130">
               <thead>
                 <tr className="border-b border-black/8">
-                  <th className="text-left px-6 py-3 text-[#6B7280] font-medium">Tenant</th>
-                  <th className="text-left px-3 py-3 text-[#6B7280] font-medium">Unit</th>
+                  <th className="text-left px-4 py-3 text-[#6B7280] font-medium">Tenant</th>
+                  <th className="text-left px-3 py-3 text-[#6B7280] font-medium hidden sm:table-cell">Unit</th>
                   <th className="text-right px-3 py-3 text-[#6B7280] font-medium">Amount</th>
-                  <th className="text-right px-3 py-3 text-[#6B7280] font-medium">Method</th>
-                  <th className="text-right px-6 py-3 text-[#6B7280] font-medium">Status</th>
+                  <th className="text-right px-3 py-3 text-[#6B7280] font-medium hidden sm:table-cell">Method</th>
+                  <th className="text-right px-4 py-3 text-[#6B7280] font-medium">Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -184,17 +185,17 @@ export function PaymentsClient({
                   const cfg = statusConfig[payment.status] ?? statusConfig.due
                   return (
                     <tr key={payment.id} className="border-b border-black/4 last:border-0 hover:bg-[#FAF8F3] transition-colors">
-                      <td className="px-6 py-3.5 font-medium text-[#0A1628]">{tenant?.full_name ?? '—'}</td>
-                      <td className="px-3 py-3.5 text-[#6B7280]">
+                      <td className="px-4 py-3.5 font-medium text-[#0A1628]">{tenant?.full_name ?? '—'}</td>
+                      <td className="px-3 py-3.5 text-[#6B7280] hidden sm:table-cell">
                         {tenant?.units ? `${tenant.units.properties?.name} · Unit ${tenant.units.unit_number}` : '—'}
                       </td>
                       <td className="px-3 py-3.5 text-right font-mono text-[#0A1628]">
                         {payment.currency === 'ZAR' ? 'R' : '$'}{Number(payment.amount).toFixed(0)}
                       </td>
-                      <td className="px-3 py-3.5 text-right text-[#6B7280] capitalize">
+                      <td className="px-3 py-3.5 text-right text-[#6B7280] capitalize hidden sm:table-cell">
                         {payment.payment_method ?? '—'}
                       </td>
-                      <td className="px-6 py-3.5 text-right">
+                      <td className="px-4 py-3.5 text-right">
                         <div className="flex items-center justify-end gap-2">
                           <Badge variant="outline" className={cn('text-xs border', cfg.className)}>
                             {cfg.label}
@@ -214,6 +215,7 @@ export function PaymentsClient({
                 })}
               </tbody>
             </table>
+            </div>
           )}
         </CardContent>
       </Card>

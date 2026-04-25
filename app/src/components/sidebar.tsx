@@ -32,22 +32,25 @@ export function Sidebar() {
     router.refresh()
   }
 
-  return (
-    <aside className="w-60 shrink-0 flex flex-col bg-white border-r border-black/8 h-screen sticky top-0">
-      <div className="px-5 py-5 border-b border-black/8">
-        <RentoraLogo size="sm" />
-      </div>
+  const isActive = (href: string) =>
+    pathname === href || (href !== '/dashboard' && pathname.startsWith(href))
 
-      <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-        {navItems.map(({ href, label, icon: Icon }) => {
-          const active = pathname === href || (href !== '/dashboard' && pathname.startsWith(href))
-          return (
+  return (
+    <>
+      {/* Desktop sidebar */}
+      <aside className="hidden lg:flex w-60 shrink-0 flex-col bg-white border-r border-black/8 h-screen sticky top-0">
+        <div className="px-5 py-5 border-b border-black/8">
+          <RentoraLogo size="sm" />
+        </div>
+
+        <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+          {navItems.map(({ href, label, icon: Icon }) => (
             <Link
               key={href}
               href={href}
               className={cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors',
-                active
+                isActive(href)
                   ? 'bg-[#0A1628] text-white'
                   : 'text-[#6B7280] hover:bg-[#F5F2EA] hover:text-[#0A1628]'
               )}
@@ -55,19 +58,42 @@ export function Sidebar() {
               <Icon size={17} strokeWidth={1.75} />
               {label}
             </Link>
-          )
-        })}
-      </nav>
+          ))}
+        </nav>
 
-      <div className="px-3 py-4 border-t border-black/8">
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#6B7280] hover:bg-red-50 hover:text-red-600 transition-colors w-full"
-        >
-          <LogOut size={17} strokeWidth={1.75} />
-          Sign out
-        </button>
-      </div>
-    </aside>
+        <div className="px-3 py-4 border-t border-black/8">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#6B7280] hover:bg-red-50 hover:text-red-600 transition-colors w-full"
+          >
+            <LogOut size={17} strokeWidth={1.75} />
+            Sign out
+          </button>
+        </div>
+      </aside>
+
+      {/* Mobile bottom nav */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-black/8 flex items-center justify-around px-1 py-2 safe-area-pb">
+        {navItems.slice(0, 6).map(({ href, label, icon: Icon }) => (
+          <Link
+            key={href}
+            href={href}
+            className={cn(
+              'flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl transition-colors min-w-0',
+              isActive(href) ? 'text-[#0A1628]' : 'text-[#9CA3AF]'
+            )}
+          >
+            <Icon
+              size={20}
+              strokeWidth={isActive(href) ? 2.25 : 1.75}
+              className={isActive(href) ? 'text-[#0A1628]' : 'text-[#9CA3AF]'}
+            />
+            <span className={cn('text-[9px] font-medium truncate', isActive(href) ? 'text-[#0A1628]' : 'text-[#9CA3AF]')}>
+              {label === 'Dashboard' ? 'Home' : label === 'AI Inbox' ? 'Inbox' : label}
+            </span>
+          </Link>
+        ))}
+      </nav>
+    </>
   )
 }

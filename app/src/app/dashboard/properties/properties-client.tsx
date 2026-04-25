@@ -142,7 +142,8 @@ export function PropertiesClient({
                 </CardHeader>
                 {units.length > 0 && (
                   <CardContent className="p-0">
-                    <table className="w-full text-sm">
+                    <div className="overflow-x-auto">
+                    <table className="w-full text-sm min-w-96">
                       <thead>
                         <tr className="border-t border-black/8">
                           <th className="text-left px-6 py-2.5 text-[#6B7280] font-medium text-xs">Unit</th>
@@ -178,6 +179,7 @@ export function PropertiesClient({
                         )}
                       </tbody>
                     </table>
+                    </div>
                   </CardContent>
                 )}
               </Card>

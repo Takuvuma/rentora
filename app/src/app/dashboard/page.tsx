@@ -135,36 +135,36 @@ export default async function DashboardPage() {
                   No payments recorded for this month yet.
                 </div>
               ) : (
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-black/8">
-                      <th className="text-left px-6 py-3 text-[#6B7280] font-medium">Tenant</th>
-                      <th className="text-left px-3 py-3 text-[#6B7280] font-medium">Unit</th>
-                      <th className="text-right px-3 py-3 text-[#6B7280] font-medium">Amount</th>
-                      <th className="text-right px-6 py-3 text-[#6B7280] font-medium">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {payments.map(payment => {
-                      const tenant = tenants.find(t => t.id === payment.tenant_id)
-                      const cfg = statusConfig[payment.status as keyof typeof statusConfig] ?? statusConfig.due
-                      return (
-                        <tr key={payment.id} className="border-b border-black/4 last:border-0 hover:bg-[#FAF8F3] transition-colors">
-                          <td className="px-6 py-3.5 font-medium text-[#0A1628]">{tenant?.full_name ?? '—'}</td>
-                          <td className="px-3 py-3.5 text-[#6B7280]">Unit {payment.unit_id.slice(-4)}</td>
-                          <td className="px-3 py-3.5 text-right font-mono text-[#0A1628]">
-                            {payment.currency === 'ZAR' ? 'R' : '$'}{payment.amount.toFixed(0)}
-                          </td>
-                          <td className="px-6 py-3.5 text-right">
-                            <Badge variant="outline" className={cn('text-xs font-medium border', cfg.className)}>
-                              {cfg.label}
-                            </Badge>
-                          </td>
-                        </tr>
-                      )
-                    })}
-                  </tbody>
-                </table>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm min-w-100">
+                    <thead>
+                      <tr className="border-b border-black/8">
+                        <th className="text-left px-4 py-3 text-[#6B7280] font-medium">Tenant</th>
+                        <th className="text-right px-4 py-3 text-[#6B7280] font-medium">Amount</th>
+                        <th className="text-right px-4 py-3 text-[#6B7280] font-medium">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {payments.map(payment => {
+                        const tenant = tenants.find(t => t.id === payment.tenant_id)
+                        const cfg = statusConfig[payment.status as keyof typeof statusConfig] ?? statusConfig.due
+                        return (
+                          <tr key={payment.id} className="border-b border-black/4 last:border-0 hover:bg-[#FAF8F3] transition-colors">
+                            <td className="px-4 py-3.5 font-medium text-[#0A1628]">{tenant?.full_name ?? '—'}</td>
+                            <td className="px-4 py-3.5 text-right font-mono text-[#0A1628]">
+                              {payment.currency === 'ZAR' ? 'R' : '$'}{payment.amount.toFixed(0)}
+                            </td>
+                            <td className="px-4 py-3.5 text-right">
+                              <Badge variant="outline" className={cn('text-xs font-medium border', cfg.className)}>
+                                {cfg.label}
+                              </Badge>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
               )}
             </CardContent>
           </Card>

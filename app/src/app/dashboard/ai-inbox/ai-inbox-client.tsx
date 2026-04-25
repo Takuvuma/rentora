@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { MessageSquareMore, AlertCircle, Bot, User, Wifi } from 'lucide-react'
+import { MessageSquareMore, AlertCircle, Bot, User, Wifi, ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 
@@ -75,6 +75,13 @@ export function AIInboxClient({
       )
     : []
 
+  const [mobileView, setMobileView] = useState<'list' | 'thread'>('list')
+
+  function selectConversation(conv: Conversation) {
+    setSelected(conv)
+    setMobileView('thread')
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -116,7 +123,7 @@ export function AIInboxClient({
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-[calc(100vh-220px)]">
           {/* Conversation list */}
-          <div className="lg:col-span-1 overflow-y-auto space-y-2 pr-1">
+          <div className={cn('lg:col-span-1 overflow-y-auto space-y-2 pr-1', mobileView === 'thread' ? 'hidden lg:block' : 'block')}>
             {displayed.length === 0 ? (
               <p className="text-sm text-[#6B7280] text-center py-8">No escalated conversations</p>
             ) : displayed.map(conv => {
@@ -126,7 +133,7 @@ export function AIInboxClient({
               return (
                 <button
                   key={conv.id}
-                  onClick={() => setSelected(conv)}
+                  onClick={() => selectConversation(conv)}
                   className={cn(
                     'w-full text-left rounded-xl border p-3.5 transition-colors',
                     selected?.id === conv.id
@@ -166,7 +173,7 @@ export function AIInboxClient({
           </div>
 
           {/* Conversation thread */}
-          <div className="lg:col-span-2 flex flex-col border border-black/8 rounded-2xl overflow-hidden bg-white">
+          <div className={cn('lg:col-span-2 flex flex-col border border-black/8 rounded-2xl overflow-hidden bg-white', mobileView === 'list' ? 'hidden lg:flex' : 'flex')}>
             {!selected ? (
               <div className="flex-1 flex items-center justify-center text-sm text-[#6B7280]">
                 Select a conversation
@@ -174,12 +181,20 @@ export function AIInboxClient({
             ) : (
               <>
                 {/* Header */}
-                <div className="px-5 py-3.5 border-b border-black/8 flex items-center justify-between">
-                  <div>
-                    <p className="font-semibold text-[#0A1628]">{selected.tenants?.full_name}</p>
-                    <p className="text-xs text-[#6B7280]">
-                      {selected.tenants?.units?.properties?.name} · Unit {selected.tenants?.units?.unit_number} · {selected.tenants?.phone}
+                <div className="px-4 py-3.5 border-b border-black/8 flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <button
+                      onClick={() => setMobileView('list')}
+                      className="lg:hidden text-[#6B7280] hover:text-[#0A1628] shrink-0"
+                    >
+                      <ArrowLeft size={18} />
+                    </button>
+                  <div className="min-w-0">
+                    <p className="font-semibold text-[#0A1628] truncate">{selected.tenants?.full_name}</p>
+                    <p className="text-xs text-[#6B7280] truncate">
+                      {selected.tenants?.units?.properties?.name} · Unit {selected.tenants?.units?.unit_number}
                     </p>
+                  </div>
                   </div>
                   {selected.is_escalated && (
                     <div className="flex items-center gap-2">
