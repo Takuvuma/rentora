@@ -10,14 +10,7 @@ import { Label } from '@/components/ui/label'
 import { RentoraLogo } from '@/components/rentora-logo'
 import { Building2, Users, ArrowLeft } from 'lucide-react'
 import { cn } from '@/lib/utils'
-
-const COUNTRIES = [
-  { code: 'ZW', dial: '+263', flag: '🇿🇼', name: 'Zimbabwe' },
-  { code: 'ZA', dial: '+27',  flag: '🇿🇦', name: 'South Africa' },
-  { code: 'NG', dial: '+234', flag: '🇳🇬', name: 'Nigeria' },
-  { code: 'KE', dial: '+254', flag: '🇰🇪', name: 'Kenya' },
-  { code: 'GH', dial: '+233', flag: '🇬🇭', name: 'Ghana' },
-]
+import { COUNTRIES } from '@/lib/countries'
 
 type Role = 'landlord' | 'tenant' | null
 type Step = 'role' | 'form'
@@ -76,7 +69,7 @@ export default function SignupPage() {
         full_name: form.fullName,
         email: form.email,
         phone: fullPhone,
-        country: form.country as 'ZW' | 'ZA' | 'NG' | 'KE' | 'GH',
+        country: form.country as string,
         subscription_tier: 'starter',
       })
     }
@@ -210,7 +203,7 @@ export default function SignupPage() {
               <div className="space-y-1.5">
                 <Label htmlFor="phone">WhatsApp number</Label>
                 <div className="flex gap-2">
-                  <div className="flex items-center h-10 px-3 rounded-md border border-input bg-[#FAF8F3] text-sm font-medium text-[#0A1628] shrink-0 min-w-[72px]">
+                  <div className="flex items-center h-10 px-3 rounded-md border border-input bg-[#FAF8F3] text-sm font-medium text-[#0A1628] shrink-0 min-w-18">
                     {COUNTRIES.find(c => c.code === form.country)?.flag} {form.dialCode}
                   </div>
                   <Input

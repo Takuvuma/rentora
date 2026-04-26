@@ -42,7 +42,13 @@ create type message_role as enum ('user', 'assistant');
 create type conversation_channel as enum ('whatsapp', 'web');
 create type reminder_channel as enum ('whatsapp', 'email');
 create type currency_code as enum ('USD', 'ZAR');
-create type country_code as enum ('ZW', 'ZA', 'NG', 'KE', 'GH');
+create type country_code as enum (
+  'ZW', 'ZA', 'NG', 'KE', 'GH',
+  'US',
+  'GB', 'DE', 'FR', 'IT', 'ES', 'NL', 'BE', 'SE', 'NO', 'DK', 'FI',
+  'CH', 'AT', 'PT', 'IE', 'PL', 'CZ', 'SK', 'HU', 'RO', 'BG', 'HR',
+  'SI', 'GR', 'EE', 'LV', 'LT', 'LU', 'MT', 'CY', 'IS'
+);
 
 -- ─────────────── LANDLORDS ───────────────
 create table landlords (

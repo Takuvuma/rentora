@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 import { Bot, Bell, Eye, EyeOff, Copy, Check, Wifi, WifiOff, LogOut } from 'lucide-react'
+import { COUNTRIES } from '@/lib/countries'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 
@@ -197,11 +198,9 @@ export function SettingsClient({ landlord }: { landlord: Landlord }) {
                 onChange={e => setProfile(p => ({ ...p, country: e.target.value }))}
                 className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
               >
-                <option value="ZW">🇿🇼 Zimbabwe</option>
-                <option value="ZA">🇿🇦 South Africa</option>
-                <option value="NG">🇳🇬 Nigeria</option>
-                <option value="KE">🇰🇪 Kenya</option>
-                <option value="GH">🇬🇭 Ghana</option>
+                {COUNTRIES.map(c => (
+                  <option key={c.code} value={c.code}>{c.flag} {c.name}</option>
+                ))}
               </select>
             </div>
           </div>
