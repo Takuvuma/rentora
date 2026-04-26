@@ -124,6 +124,7 @@ async function processMessage(body: Record<string, unknown>) {
   const { reply, escalate } = await runAIAgent({
     tenant: {
       id: tenant.id,
+      unitId: tenant.unit_id,
       name: tenant.full_name,
       unit: units?.unit_number ?? '—',
       property: units?.properties?.name ?? '—',
