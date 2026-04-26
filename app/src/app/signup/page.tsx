@@ -53,7 +53,7 @@ export default function SignupPage() {
       password: form.password,
       options: {
         data: { full_name: form.fullName, phone: fullPhone, country: form.country },
-        emailRedirectTo: 'https://rentora.agency/auth/callback',
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
       },
     })
 
