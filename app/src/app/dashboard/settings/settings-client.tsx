@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
-import { Bot, Bell, Eye, EyeOff, Copy, Check, Wifi, WifiOff } from 'lucide-react'
+import { Bot, Bell, Eye, EyeOff, Copy, Check, Wifi, WifiOff, LogOut } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 
@@ -457,6 +457,21 @@ export function SettingsClient({ landlord }: { landlord: Landlord }) {
           </div>
         </CardContent>
       </Card>
+
+      {/* ── Sign Out ── */}
+      <div className="pt-2 pb-6">
+        <button
+          onClick={async () => {
+            await supabase.auth.signOut()
+            router.push('/login')
+            router.refresh()
+          }}
+          className="flex items-center gap-2 text-sm text-red-500 hover:text-red-700 font-medium transition-colors"
+        >
+          <LogOut size={15} />
+          Sign out
+        </button>
+      </div>
     </div>
   )
 }

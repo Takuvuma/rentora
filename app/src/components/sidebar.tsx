@@ -74,7 +74,14 @@ export function Sidebar() {
 
       {/* Mobile bottom nav */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-black/8 flex items-center justify-around px-1 py-2 safe-area-pb">
-        {navItems.slice(0, 6).map(({ href, label, icon: Icon }) => (
+        {[
+          { href: '/dashboard',             label: 'Home',        icon: LayoutDashboard },
+          { href: '/dashboard/tenants',     label: 'Tenants',     icon: Users },
+          { href: '/dashboard/payments',    label: 'Payments',    icon: CreditCard },
+          { href: '/dashboard/maintenance', label: 'Maintenance', icon: Wrench },
+          { href: '/dashboard/ai-inbox',    label: 'Inbox',       icon: MessageSquareMore },
+          { href: '/dashboard/settings',    label: 'Settings',    icon: Settings },
+        ].map(({ href, label, icon: Icon }) => (
           <Link
             key={href}
             href={href}
@@ -89,7 +96,7 @@ export function Sidebar() {
               className={isActive(href) ? 'text-[#0A1628]' : 'text-[#9CA3AF]'}
             />
             <span className={cn('text-[9px] font-medium truncate', isActive(href) ? 'text-[#0A1628]' : 'text-[#9CA3AF]')}>
-              {label === 'Dashboard' ? 'Home' : label === 'AI Inbox' ? 'Inbox' : label}
+              {label}
             </span>
           </Link>
         ))}
