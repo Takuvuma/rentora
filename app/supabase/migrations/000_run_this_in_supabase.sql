@@ -54,6 +54,13 @@ create table landlords (
   country country_code not null default 'ZW',
   subscription_tier subscription_tier not null default 'starter',
   stripe_customer_id text,
+  whatsapp_phone_number_id text,
+  whatsapp_access_token text,
+  ecocash_merchant_number text,
+  ecocash_merchant_name text,
+  accepted_payment_methods text[] not null default '{"ecocash","cash"}',
+  reminders_enabled boolean not null default true,
+  reminder_days_before int[] not null default '{7,3,1}',
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   unique(user_id)
